@@ -4,12 +4,6 @@
 
 This project demonstrates a comprehensive process of data cleaning, feature engineering, rating calculation based on specific criteria using the User Application dataset, and analysis using Python and popular data science libraries such as Pandas, Seaborn, and Matplotlib. The final visualization provides insights into the average rating of applications over time, aiding in better decision-making and analysis.
 
-## User Rating Calculation
-
-### Overview and Conclusion
-
-This project demonstrates a comprehensive process of data cleaning, feature engineering, rating calculation based on specific criteria using the User Application dataset, and analysis using Python and popular data science libraries such as Pandas, Seaborn, and Matplotlib. The final visualization provides insights into the average rating of applications over time, aiding in better decision-making and analysis.
-
 ### Process and Analysis
 
 1. **Data Cleaning**:
@@ -85,8 +79,9 @@ full_df.drop(columns=['Score', 'Age Score', 'Apply Score', 'Marital Score', 'Loc
 accepted = full_df.loc[full_df['Total Score'] > 0, :]
 
 # Group the data from the resulting table by the submission week, and plot the average rating of accepted applications for each week on a graph
-accepted.loc[:, 'Application Week'] = accepted['Applied at'].apply(lambda x: x.isocalendar().week)
-accepted.loc[:, 'Week Start'] = accepted['Applied at'].dt.to_period('W').apply(lambda y: y.start_time)
+accepted = accepted.copy()  # Create a copy to avoid SettingWithCopyWarning
+accepted['Application Week'] = accepted['Applied at'].apply(lambda x: x.isocalendar().week)  # application week number
+accepted['Week Start'] = accepted['Applied at'].dt.to_period('W').apply(lambda y: y.start_time)  # date value of the week start
 
 # Average rating grouped by submission week
 data = round(accepted.groupby('Week Start')['Total Score'].mean().reset_index(), 2)
